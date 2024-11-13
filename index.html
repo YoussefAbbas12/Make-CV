@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
+        }
+        .resume {
+            max-width: 1200px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 30px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 6px;
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 30px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #ddd;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 50px;
+            font-weight: 400;
+        }
+        .header p {
+            margin: 0;
+            font-size: 22px;
+            color: #777;
+            letter-spacing: 9px;
+        }
+        .Contact-title,
+        .Summary-title {
+            font-weight: 500;
+            font-size: 35px;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            text-transform: uppercase;
+        }
+        .section-title {
+            font-weight: 500;
+            font-size: 30px;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 2px solid #ddd;
+            text-transform: uppercase;
+        }
+        .contact-info {
+            list-style: none;
+            padding: 0;
+        }
+        .contact-info li {
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        .contact-info li i {
+            margin-right: 10px;
+            color: #666;
+        }
+        .skills,
+        .education {
+            margin-bottom: 30px;
+        }
+        .skills ul,
+        .education ul {
+            padding-left: 0;
+            list-style: none;
+        }
+        .skills li,
+        .education li {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .work-experience {
+            margin-bottom: 30px;
+        }
+        .job-title {
+            font-weight: 500;
+            margin-bottom: 5px;
+            font-size: 26px;
+        }
+        .job-details {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        .job-description {
+            margin-bottom: 15px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="mb-4">Create Your CV</h2>
+    <form id="cvForm">
+        <!-- Personal Information -->
+        <div class="mb-3">
+            <label for="name" class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="name" required>
+        </div>
+        <div class="mb-3">
+            <label for="title" class="form-label">Professional Title</label>
+            <input type="text" class="form-control" id="title" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" required>
+        </div>
+        <div class="mb-3">
+            <label for="phone" class="form-label">Phone Number</label>
+            <input type="text" class="form-control" id="phone" required>
+        </div>
+        <div class="mb-3">
+            <label for="location" class="form-label">Location</label>
+            <input type="text" class="form-control" id="location" required>
+        </div>
+        <div class="mb-3">
+            <label for="profile" class="form-label">Profile Name</label>
+            <input type="text" class="form-control" id="profile" required>
+        </div>
+
+        <!-- Skills Section -->
+        <div class="mb-3">
+            <label for="skills" class="form-label">Skills</label>
+            <div id="skillsSection">
+                <div class="input-group mb-3 skill-entry">
+                    <input type="text" class="form-control" placeholder="Skill" required>
+                    <button type="button" class="btn btn-danger remove-entry">Remove</button>
+                </div>
+            </div>
+            <button type="button" class="btn btn-secondary" id="addSkill">Add Skill</button>
+        </div>
+
+        <!-- Education Section -->
+        <div class="mb-3">
+            <label class="form-label">Education</label>
+            <div id="educationSection">
+                <div class="input-group mb-3 education-entry">
+                    <input type="text" class="form-control" placeholder="Degree/Major" required>
+                    <input type="text" class="form-control" placeholder="School Name" required>
+                    <input type="text" class="form-control" placeholder="Date Range" required>
+                    <button type="button" class="btn btn-danger remove-entry">Remove</button>
+                </div>
+            </div>
+            <button type="button" class="btn btn-secondary" id="addEducation">Add Education</button>
+        </div>
+
+        <!-- Work Experience Section -->
+        <div class="mb-3">
+            <label class="form-label">Work Experience</label>
+            <div id="experienceSection">
+                <div class="input-group mb-3 experience-entry">
+                    <input type="text" class="form-control" placeholder="Job Title" required>
+                    <input type="text" class="form-control" placeholder="Company Name" required>
+                    <input type="text" class="form-control" placeholder="Date Range" required>
+                    <textarea class="form-control" placeholder="Job Description" required></textarea>
+                    <button type="button" class="btn btn-danger remove-entry">Remove</button>
+                </div>
+            </div>
+            <button type="button" class="btn btn-secondary" id="addExperience">Add Experience</button>
+        </div>
+
+        <!-- Summary Section -->
+        <div class="mb-3">
+            <label for="summary" class="form-label">Summary</label>
+            <textarea class="form-control" id="summary" rows="3" required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Generate CV</button>
+    </form>
+
+    <div id="cvOutput" style="display: none; margin-top: 50px;">
+        <h2>Your CV</h2>
+        <div id="generatedCV"></div>
+        <button id="downloadPdfBtn" class="btn btn-success" style="display: none; margin-top: 20px;">Download as PDF</button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+<script>
+    // إضافة التعليم (Education)
+    document.getElementById('addEducation').addEventListener('click', function() {
+        const educationSection = document.getElementById('educationSection');
+        const newEntry = document.createElement('div');
+        newEntry.classList.add('input-group', 'mb-3', 'education-entry');
+        newEntry.innerHTML = `
+            <input type="text" class="form-control" placeholder="Degree/Major" required>
+            <input type="text" class="form-control" placeholder="School Name" required>
+            <input type="text" class="form-control" placeholder="Date Range" required>
+            <button type="button" class="btn btn-danger remove-entry">Remove</button>`;
+        educationSection.appendChild(newEntry);
+    });
+
+    // إضافة الخبرات العملية (Work Experience)
+    document.getElementById('addExperience').addEventListener('click', function() {
+        const experienceSection = document.getElementById('experienceSection');
+        const newEntry = document.createElement('div');
+        newEntry.classList.add('input-group', 'mb-3', 'experience-entry');
+        newEntry.innerHTML = `
+            <input type="text" class="form-control" placeholder="Job Title" required>
+            <input type="text" class="form-control" placeholder="Company Name" required>
+            <input type="text" class="form-control" placeholder="Date Range" required>
+            <textarea class="form-control" placeholder="Job Description" required></textarea>
+            <button type="button" class="btn btn-danger remove-entry">Remove</button>`;
+        experienceSection.appendChild(newEntry);
+    });
+
+    // إضافة المهارات (Skills)
+    document.getElementById('addSkill').addEventListener('click', function() {
+        const skillsSection = document.getElementById('skillsSection');
+        const newEntry = document.createElement('div');
+        newEntry.classList.add('input-group', 'mb-3', 'skill-entry');
+        newEntry.innerHTML = `
+            <input type="text" class="form-control" placeholder="Skill" required>
+            <button type="button" class="btn btn-danger remove-entry">Remove</button>`;
+        skillsSection.appendChild(newEntry);
+    });
+
+    document.addEventListener('click', function(event) {
+        if (event.target.classList.contains('remove-entry')) {
+            event.target.closest('.input-group').remove();
+        }
+    });
+
+    // إنشاء السيرة الذاتية
+    document.getElementById('cvForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // جمع البيانات
+        const name = document.getElementById('name').value;
+        const title = document.getElementById('title').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const location = document.getElementById('location').value;
+        const profile = document.getElementById('profile').value;
+        const summary = document.getElementById('summary').value;
+
+        // جمع المهارات
+        const skills = Array.from(document.querySelectorAll('.skill-entry input')).map(skill => skill.value);
+
+        // جمع التعليم
+        const education = Array.from(document.querySelectorAll('.education-entry')).map(entry => {
+            return {
+                degree: entry.children[0].value,
+                school: entry.children[1].value,
+                date: entry.children[2].value
+            };
+        });
+
+        // جمع الخبرات العملية
+        const experience = Array.from(document.querySelectorAll('.experience-entry')).map(entry => {
+            return {
+                title: entry.children[0].value,
+                company: entry.children[1].value,
+                date: entry.children[2].value,
+                description: entry.children[3].value
+            };
+        });
+
+        // إنشاء الـ HTML للسيرة الذاتية
+        let cvHtml = `
+            <div class="resume">
+                <div class="header">
+                    <h1>${name}</h1>
+                    <p>${title}</p>
+                </div>
+                <div class="contact">
+                    <h2 class="Contact-title">Contact Information</h2>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-envelope"></i>${email}</li>
+                        <li><i class="fas fa-phone"></i>${phone}</li>
+                        <li><i class="fas fa-map-marker-alt"></i>${location}</li>
+                        <li><i class="fas fa-user"></i>${profile}</li>
+                    </ul>
+                </div>
+                <div class="summary">
+                    <h2 class="Summary-title">Summary</h2>
+                    <p>${summary}</p>
+                </div>
+                <div class="skills">
+                    <h3 class="section-title">Skills</h3>
+                    <ul>`;
+        skills.forEach(skill => {
+            cvHtml += `<li>${skill.trim()}</li>`;
+        });
+        cvHtml += `</ul>
+                </div>
+                <div class="education">
+                    <h3 class="section-title">Education</h3>
+                    <ul>`;
+        education.forEach(edu => {
+            cvHtml += `<li><strong>${edu.degree}</strong> at ${edu.school} (${edu.date})</li>`;
+        });
+        cvHtml += `</ul>
+                </div>
+                <div class="work-experience">
+                    <h3 class="section-title">Work Experience</h3>`;
+        experience.forEach(exp => {
+            cvHtml += `
+                    <div class="job">
+                        <h4 class="job-title">${exp.title}</h4>
+                        <p class="job-details">${exp.company} | ${exp.date}</p>
+                        <p class="job-description">${exp.description}</p>
+                    </div>`;
+        });
+        cvHtml += `
+                </div>
+            </div>
+        `;
+
+        // عرض السيرة الذاتية
+        document.getElementById('generatedCV').innerHTML = cvHtml;
+        document.getElementById('cvOutput').style.display = 'block';
+
+        // إنشاء ملف PDF
+        const resumeElement = document.querySelector('.resume');
+        document.getElementById('downloadPdfBtn').style.display = 'inline-block';
+        document.getElementById('downloadPdfBtn').addEventListener('click', function() {
+            html2pdf().from(resumeElement).save(`${name}-Resume.pdf`);
+        });
+    });
+</script>
+</body>
+</html>
