@@ -100,6 +100,121 @@
             line-height: 1.6;
         }
     </style>
+    <style>
+        body {
+          background-color: #f4f4f4;
+          font-family: Arial, sans-serif;
+        }
+        .resume {
+          max-width: 1200px;
+          margin: 50px auto;
+          background-color: #fff;
+          padding: 30px;
+          box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+          border-radius: 6px;
+        }
+        .header {
+          text-align: center;
+          padding-bottom: 30px;
+          margin-bottom: 30px;
+          border-bottom: 2px solid #ddd;
+        }
+        .header h1 {
+          margin: 0;
+          font-size: 80px;
+          font-weight: 400;
+        }
+        .header p {
+          margin: 0;
+          font-size: 22px;
+          color: #777;
+          letter-spacing: 9px;
+        }
+        .Contact-title,
+        .Summary-title {
+          font-weight: 500;
+          font-size: 35px;
+          margin-bottom: 15px;
+          padding-bottom: 5px;
+          text-transform: uppercase;
+        }
+        .section-title {
+          font-weight: 500;
+          font-size: 35px;
+          margin-bottom: 15px;
+          padding-bottom: 5px;
+          padding-top: 30px;
+          margin-top: 30px;
+          border-top: 2px solid #ddd;
+          text-transform: uppercase;
+        }
+        .contact-info {
+          list-style: none;
+          padding: 0;
+        }
+        .contact-info li {
+          margin-bottom: 15px;
+          font-size: 18px;
+        }
+        .contact-info li i {
+          margin-right: 10px;
+          color: #666;
+        }
+        .skills,
+        .education {
+          margin-bottom: 30px;
+        }
+        .skills ul,
+        .education ul {
+          padding-left: 0;
+          list-style: none;
+        }
+        .skills li,
+        .education li {
+          font-size: 16px;
+          margin-bottom: 20px;
+        }
+        .work-experience {
+          margin-bottom: 30px;
+        }
+        .job-title {
+          font-weight: 500;
+          margin-bottom: 5px;
+          font-size: 26px;
+        }
+        .job-details {
+          font-style: italic;
+          color: #555;
+          margin-bottom: 15px;
+          font-size: 18px;
+        }
+        .job-description {
+          margin-bottom: 15px;
+          font-size: 16px;
+          line-height: 1.6;
+        }
+        ul {
+          padding-left: 20px;
+        }
+        ul li {
+          margin-bottom: 20px;
+          font-size: 16px;
+        }
+        .leftSection {
+          position: relative;
+        }
+        .leftSection::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          right: 0;
+          height: 100%;
+          width: 62px;
+          background-color: #ddd;
+          border-left: 30px solid #fff;
+          border-right: 30px solid #fff;
+        }
+      </style>
 </head>
 <body>
 <div class="container mt-5">
@@ -170,6 +285,19 @@
                 </div>
             </div>
             <button type="button" class="btn btn-secondary" id="addExperience">Add Experience</button>
+        </div>
+        <!-- Projects Section -->
+        <div class="mb-3">
+            <label class="form-label">Projects</label>
+            <div id="experienceSection">
+                <div class="input-group mb-3 experience-entry">
+                    <input type="text" class="form-control" placeholder="Project Title" required>
+                    <input type="text" class="form-control" placeholder="Date Range" required>
+                    <textarea class="form-control" placeholder="Job Description" required></textarea>
+                    <button type="button" class="btn btn-danger remove-entry">Remove</button>
+                </div>
+            </div>
+            <button type="button" class="btn btn-secondary" id="addExperience">Add Project</button>
         </div>
 
         <!-- Summary Section -->
@@ -270,6 +398,15 @@
             };
         });
 
+        // جمع المشاريع العملية
+        const Projects = Array.from(document.querySelectorAll('.experience-entry')).map(entry => {
+            return {
+                title: entry.children[0].value,
+                date: entry.children[1].value,
+                description: entry.children[2].value
+            };
+        });
+
         // إنشاء الـ HTML للسيرة الذاتية
         let cvHtml = `
             <div class="resume">
@@ -277,46 +414,68 @@
                     <h1>${name}</h1>
                     <p>${title}</p>
                 </div>
-                <div class="contact">
-                    <h2 class="Contact-title">Contact Information</h2>
-                    <ul class="contact-info">
-                        <li><i class="fas fa-envelope"></i>${email}</li>
-                        <li><i class="fas fa-phone"></i>${phone}</li>
-                        <li><i class="fas fa-map-marker-alt"></i>${location}</li>
-                        <li><i class="fas fa-user"></i>${profile}</li>
-                    </ul>
-                </div>
-                <div class="summary">
-                    <h2 class="Summary-title">Summary</h2>
-                    <p>${summary}</p>
-                </div>
-                <div class="skills">
-                    <h3 class="section-title">Skills</h3>
-                    <ul>`;
-        skills.forEach(skill => {
-            cvHtml += `<li>${skill.trim()}</li>`;
-        });
-        cvHtml += `</ul>
-                </div>
-                <div class="education">
-                    <h3 class="section-title">Education</h3>
-                    <ul>`;
-        education.forEach(edu => {
-            cvHtml += `<li><strong>${edu.degree}</strong> at ${edu.school} (${edu.date})</li>`;
-        });
-        cvHtml += `</ul>
-                </div>
-                <div class="work-experience">
-                    <h3 class="section-title">Work Experience</h3>`;
-        experience.forEach(exp => {
-            cvHtml += `
-                    <div class="job">
-                        <h4 class="job-title">${exp.title}</h4>
-                        <p class="job-details">${exp.company} | ${exp.date}</p>
-                        <p class="job-description">${exp.description}</p>
-                    </div>`;
-        });
-        cvHtml += `
+                <div class="row">
+                    <!-- Left Column -->
+                    <div class="col-md-4 leftSection">
+                        <div class="contact">
+                            <h2 class="Contact-title">Contact Information</h2>
+                            <ul class="contact-info">
+                                <li><i class="fas fa-envelope"></i>${email}</li>
+                                <li><i class="fas fa-phone"></i>${phone}</li>
+                                <li><i class="fas fa-map-marker-alt"></i>${location}</li>
+                                <li><i class="fas fa-user"></i>${profile}</li>
+                            </ul>
+                        </div>
+                        <div class="education">
+                            <h3 class="section-title">Education</h3>
+                            <ul>`;
+                education.forEach(edu => {
+                    cvHtml += `<li><strong>${edu.degree}</strong> at ${edu.school} (${edu.date})</li>`;
+                });
+                cvHtml += `</ul>
+                        </div>
+                                                <div class="skills">
+                            <h3 class="section-title">Skills</h3>
+                            <ul>`;
+                                skills.forEach(skill => {
+                                    cvHtml += `<li>${skill.trim()}</li>`;
+                                });
+                cvHtml += `</ul>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="col-md-8">
+
+                        <div class="summary">
+                            <h2 class="Summary-title">Summary</h2>
+                            <p>${summary}</p>
+                        </div>
+                        <div class="work-experience">
+                            <h3 class="section-title">Work Experience</h3>`;
+                experience.forEach(exp => {
+                    cvHtml += `
+                            <div class="job">
+                                <h4 class="job-title">${exp.title}</h4>
+                                <p class="job-details">${exp.company} | ${exp.date}</p>
+                                <p class="job-description">${exp.description}</p>
+                            </div>`;
+                });
+                cvHtml += `
+                        </div>
+                        <div class="work-experience">
+                            <h3 class="section-title">Work Experience</h3>`;
+                Projects.forEach(pro => {
+                    cvHtml += `
+                            <div class="job">
+                                <h4 class="job-title">${pro.title}</h4>
+                                <p class="job-details">${pro.company} | ${pro.date}</p>
+                                <p class="job-description">${pro.description}</p>
+                            </div>`;
+                });
+                cvHtml += `
+                        </div>
+                    </div>
                 </div>
             </div>
         `;
